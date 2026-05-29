@@ -1,29 +1,37 @@
-import os
+import subprocess
 import socket
 
 servers = ["8.8.8.8", "127.0.0.1", "google.com"]
 
-print("Starting infastructure check... \n")
+def check_infastructure():
 
-for ip in servers:
-    responce = os.system(f"ping -c 1 -W 1 {ip} > /dev/null 2>&1")
-    if responce == 0:
-        ping_status = "Online"
+    print("Starting infastructure check... \n")
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(1)
-        result = sock.connect_ex((ip, 80))
+    for ip in servers:
+        responce_ping = subprocess.run(
+            ["ping", "-c", "1", "-W", "1", ip],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            )
         
-        if result == 0:
-            port_status = "web-servise (port 80) is open"
+        if responce_ping.returncode == 0:
+            ping_status = "Online"
+
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1)
+            result_port = sock.connect_ex((ip, 80))
+            
+            if result_port == 0:
+                port_status = "web-servise (port 80) is open"
+            else:
+                port_status = "web-servise (port 80) is closed"
+            sock.close()
         else:
-            port_status = "web-servise (port 80) is closed"
-        sock.close()
-    else:
-        ping_status = "Server error"
-        port_status = "N/A"
+            ping_status = "Server error"
+            port_status = "N/A"
 
-    print(f"Server: {ip} - {ping_status} - {port_status}")
-    print("-" * 30)
+        print(f"Server: {ip} - {ping_status} - {port_status}")
+        print("-" * 30)
 
-print("\n Infastructure check completed.")
+    print("\n Infastructure check completed.")
+    check_infastructure()
