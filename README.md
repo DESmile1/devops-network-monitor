@@ -1,14 +1,30 @@
-# Network & Service Monitor (Python)
+# Infrastructure & Network Service Monitor
 
-A simple and effective Python script for monitoring server availability and checking the status of web services.
+A lightweight, secure Python-based automation tool designed to monitor server availability and verify web service statuses.
 
 ## Features
-* **ICMP Check (Ping):** Checks for a network connection to the host.
-* **TCP Port Check:** Checks whether port 80 (HTTP) is open to confirm that the web server (Nginx/Apache) is working.
-* **Clean Output:** Uses stream redirection to `/dev/null` for clean console output.
+* **Safe ICMP Checks (Ping):** Utilizes secure `subprocess.run` architecture to safely verify host availability without shell injection risks.
+* **TCP Port Inspection:** Leverages Python's native `socket` module to check if port 80 (HTTP) is open, confirming active web services (Nginx/Apache).
+* **Automated Pipeline:** Wrapped in a `Makefile` for fast, standardized execution and testing.
+* **Unit Tested:** Built-in test coverage using Python's `unittest` framework to guarantee configuration integrity.
 
-## How to run
-1. Clone the repository.
-2. Run via Python 3:
+---
+
+## Getting Started
+
+### 1. Clone the Repository
 ```bash
-python3 monitor.py
+git clone https://github.com/DESmile1/Devops-Network-Monitor
+cd devops-network-monitor
+```
+
+### 2. Run the Monitor
+You don't need to type long commands:
+```bash
+make run
+```
+
+### 3. Run Unit Tests
+Trigger the automated test runner:
+```bash
+make test
